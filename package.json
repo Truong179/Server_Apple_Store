@@ -1,7 +1,15 @@
 {
+  "name": "server_apple_store",
+  "version": "1.0.0",
+  "description": "Server AppleShop",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon --inspect app.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "mongodb": "^6.2.0",
-    "mongoose": "^7.6.3"
+    "mongoose": "^7.6.3",
+    "nodemon": "^3.0.1"
   }
 }
