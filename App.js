@@ -5,18 +5,18 @@ app.use(express.json());
 
 
 var apiRouter = require('./router/blog');
+var apiLogin = require('./router/user');
+const apiInformations = require("./router/userInformation")
 app.use('/api', apiRouter);
-
+app.use('/user', apiLogin);
+app.use('/information', apiInformations);
 app.use(function (req, res, next) {
     next(createError(404));
 });
 
 app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
     res.status(err.status || 500);
     res.render('error');
 });

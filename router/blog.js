@@ -7,4 +7,4 @@ router.get('/blog',blog_api.listBlog);
 
 
 
-module.exports=router;
+module.exports = router;
