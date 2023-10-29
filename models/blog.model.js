@@ -1,4 +1,3 @@
-const { model } = require("mongoose");
 var db = require("./db");
 
 const blogSchema = new db.mongoose.Schema({
