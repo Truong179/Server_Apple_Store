@@ -14,4 +14,4 @@ mongoose
   .catch((error) => {
     console.error("lỗi kết nối", error);
   });
-module.exports={mongoose};
+module.exports = { mongoose };
