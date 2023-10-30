@@ -5,11 +5,19 @@ var host = "192.168.0.110"; //Địa chỉ ip
 // => Sản phẩm
 exports.ListProduct = async (req, res, next) => {
   if (req.method == "GET") {
+    var typeProduct = await myMd.typeProduct.find();
     try {
       // Lấy danh sách đối tượng sản phẩm
+      var body = {};
+      for (let i = 0; i < typeProduct.length; i++) {
+        let typeName = typeProduct[i].name;
+        body[typeName] = await myMd.product
+          .find({ id_type: typeProduct[i]._id })
+          .populate("id_type");
+      }
       res.json({
         status: true,
-        message: await myMd.product.find(),
+        message: body,
       });
     } catch (error) {
       console.log(error);
@@ -28,6 +36,7 @@ exports.AddProduct = async (req, res, next) => {
     objPro.name = req.body.name;
     objPro.image = `http://${host}:3000/images/` + req.file.originalname;
     objPro.price = req.body.price;
+    objPro.hidden = true;
     objPro.description = req.body.description;
     objPro.quantity = req.body.quantity;
     objPro.id_type = req.body.id_type;
@@ -57,6 +66,7 @@ exports.UpdateProduct = async (req, res, next) => {
     objPro.name = req.body.name;
     objPro.image = `http://${host}:3000/images/` + req.file.originalname;
     objPro.price = req.body.price;
+    objPro.hidden = req.body.hidden;
     objPro.description = req.body.description;
     objPro.quantity = req.body.quantity;
     objPro.id_type = req.body.id_type;

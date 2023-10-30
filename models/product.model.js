@@ -9,6 +9,11 @@ const prSchema = new db.mongoose.Schema(
     description: { type: String, required: false },
     quantity: { type: db.mongoose.Schema.Types.Number, required: true },
     id_type: { type: db.mongoose.Schema.Types.ObjectId, ref: "typeProduct" },
+    hidden: {
+      type: db.mongoose.Schema.Types.Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     collection: "Product",
