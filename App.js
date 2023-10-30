@@ -2,8 +2,6 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 
-var apiRouter = require("./router/shop.router");
-
 var app = express();
 
 // Middleware để phân tích dữ liệu JSON
@@ -16,7 +14,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname)));
 
 // Sử dụng apiRouter để xử lý các route
-app.use("/", apiRouter);
+// => API User
+var apiLogin = require("./router/user");
+app.use("/user", apiLogin);
+
+// => API Information
+var apiInformations = require("./router/userInformation");
+app.use("/information", apiInformations);
+
+// => API Product
+var apiProduct = require("./router/product.router");
+app.use("/product", apiProduct);
+
+// => API Blog
+var apiBlog = require("./router/blog.router");
+app.use("/blog", apiBlog);
 
 // Middleware để xử lý lỗi 404
 app.use(function (req, res, next) {

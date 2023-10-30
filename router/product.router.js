@@ -6,33 +6,25 @@ var objUpload = multer({ dest: "./tmp" });
 var prController = require("../controller/product.controller");
 
 // => Hiển thị danh sách sản phẩm //
-router.get("/product", prController.ListProduct);
+router.get("/", prController.ListProduct);
 // Thêm sản phẩm
-router.post("/product", objUpload.single("image"), prController.AddProduct);
+router.post("/", objUpload.single("image"), prController.AddProduct);
 // Sửa sản phẩm
-router.put(
-  "/product/:idPro",
-  objUpload.single("image"),
-  prController.UpdateProduct
-);
+router.put("/:idPro", objUpload.single("image"), prController.UpdateProduct);
 // Xóa sản phẩm
-router.delete("/product/:idPro", prController.DeleteProduct);
+router.delete("/:idPro", prController.DeleteProduct);
 
 // => Hiển thị danh sách loại sản phẩm //
-router.get("/product/type", prController.ListTypeProduct);
+router.get("/type", prController.ListTypeProduct);
 // Thêm loại
-router.post(
-  "/product/type",
-  objUpload.single("image"),
-  prController.AddTypeProduct
-);
+router.post("/type", objUpload.single("image"), prController.AddTypeProduct);
 // Sửa loại
 router.put(
-  "/product/type/:idType",
+  "/type/:idType",
   objUpload.single("image"),
   prController.UpdateTypeProduct
 );
 // Xóa loại
-router.delete("/product/type/:idType", prController.DeleteTypeProduct);
+router.delete("/type/:idType", prController.DeleteTypeProduct);
 
 module.exports = router;

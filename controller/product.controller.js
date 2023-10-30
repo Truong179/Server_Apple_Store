@@ -1,5 +1,6 @@
 var fs = require("fs");
 var myMd = require("../models/product.model");
+var host = "192.168.0.110"; //Địa chỉ ip
 
 // => Sản phẩm
 exports.ListProduct = async (req, res, next) => {
@@ -25,7 +26,7 @@ exports.AddProduct = async (req, res, next) => {
     // Tạo đối tượng loại sản phẩm mới
     let objPro = new myMd.product();
     objPro.name = req.body.name;
-    objPro.image = "http://localhost:3000/images/" + req.file.originalname;
+    objPro.image = `http://${host}:3000/images/` + req.file.originalname;
     objPro.price = req.body.price;
     objPro.description = req.body.description;
     objPro.quantity = req.body.quantity;
@@ -54,7 +55,7 @@ exports.UpdateProduct = async (req, res, next) => {
     let objPro = new myMd.product();
     objPro._id = idPro; // Thêm cho chức năng sửa
     objPro.name = req.body.name;
-    objPro.image = "http://localhost:3000/images/" + req.file.originalname;
+    objPro.image = `http://${host}:3000/images/` + req.file.originalname;
     objPro.price = req.body.price;
     objPro.description = req.body.description;
     objPro.quantity = req.body.quantity;
@@ -113,7 +114,7 @@ exports.AddTypeProduct = async (req, res, next) => {
     // Tạo đối tượng loại sản phẩm mới
     let objType = new myMd.typeProduct();
     objType.name = req.body.name;
-    objType.image = "http://localhost:3000/images/" + req.file.originalname;
+    objType.image = `http://${host}:3000/images/` + req.file.originalname;
 
     try {
       // Lưu đối tượng loại sản phẩm vào cơ sở dữ liệu
@@ -138,7 +139,7 @@ exports.UpdateTypeProduct = async (req, res, next) => {
     let objType = new myMd.typeProduct();
     objType._id = idType; // Thêm cho chức năng sửa
     objType.name = req.body.name;
-    objType.image = "http://localhost:3000/images/" + req.file.originalname;
+    objType.image = `http://${host}:3000/images/` + req.file.originalname;
 
     try {
       // Cập nhật đối tượng loại sản phẩm vào cơ sở dữ liệu
