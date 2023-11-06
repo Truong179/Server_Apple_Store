@@ -1,7 +1,7 @@
 var fs = require("fs");
 var myMd = require("../models/product.model");
 var host = "192.168.0.110"; //Địa chỉ ip
-
+var user_model = require("../models/user")
 // => Sản phẩm
 exports.ListProduct = async (req, res, next) => {
   if (req.method == "GET") {
@@ -179,3 +179,53 @@ exports.DeleteTypeProduct = async (req, res, next) => {
     }
   }
 };
+
+exports.FavoriteProduct = async (req,res) => {
+  try {
+    const userId = req.params.userId; // Giả sử bạn có thông tin người dùng trong req.user
+    const productId = req.params.productId;
+
+    // Kiểm tra xem sản phẩm đã có trong danh sách ưa thích của người dùng hay chưa
+    const user = await user_model.user_model.findById(userId);
+    if (user.favoriteProducts.includes(productId)) {
+      return res.status(400).json({ error: "Sản phẩm đã được ưa thích" });
+    }
+
+    // Thêm sản phẩm vào danh sách ưa thích của người dùng
+    user.favoriteProducts.push(productId);
+    await user.save();
+
+    res.status(200).json({ message: "Đã thêm sản phẩm vào danh sách ưa thích" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+  }
+}
+exports.UnFavoriteProduct = async (req,res) => {
+  try {
+    const userId = req.params.userId; // Giả sử bạn có thông tin người dùng trong req.user
+    const productId = req.params.productId;
+
+    // Kiểm tra xem sản phẩm có trong danh sách ưa thích của người dùng hay không
+    const user = await user_model.user_model.findById(userId);
+    if (!user.favoriteProducts.includes(productId)) {
+      return res.status(400).json({ error: "Sản phẩm không có trong danh sách ưa thích" });
+    }
+
+    // Xóa sản phẩm khỏi danh sách ưa thích của người dùng
+    user.favoriteProducts = user.favoriteProducts.filter( function(id){
+      return id !== productId;
+    });
+      
+    console.log(user.favoriteProducts);
+   
+    await user.save();
+    res.status(200).json({ message: "Đã xóa sản phẩm khỏi danh sách ưa thích" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+  }
+}
+
+
