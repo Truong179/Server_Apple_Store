@@ -4,6 +4,7 @@ const router = express.Router();
 const loginAPI = require("../controllers/user_api");
 const orderAPI = require("../controllers/oder.controller");
 
+// Login
 router.get("/", loginAPI.getUsers);
 router.post("/signup", loginAPI.register);
 router.post("/signIn", loginAPI.login);

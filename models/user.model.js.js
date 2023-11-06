@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema(
     userName: { type: String, required: true },
     passWord: { type: String, required: true },
     role: { type: String, enum: ["Shop", "User"], required: true },
+    favoriteProducts: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+    ],
   },
   {
     collection: "User",

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const ProductModel = require("../models/product.model");
+const UserModel = require("../models/user.model.js");
 const host = "192.168.0.110"; // Địa chỉ IP
 
 // Sản phẩm
@@ -129,22 +130,13 @@ exports.addTypeProduct = async (req, res, next) => {
 };
 
 exports.updateTypeProduct = async (req, res, next) => {
-  if (req.method === "PUT") {
-    const idType = req.params.idType;
-
+  if (req.method === "GET") {
     try {
-      fs.renameSync(req.file.path, "./images/" + req.file.originalname);
-
-      const updatedType = {
-        ...req.body,
-        image: `http://${host}:3000/images/` + req.file.originalname,
-      };
-
-      const result = await ProductModel.TypeProduct.findByIdAndUpdate(
-        idType,
-        updatedType
-      );
-      res.json({ status: true, message: result });
+      const types = await ProductModel.TypeProduct.find();
+      res.json({
+        status: true,
+        message: types,
+      });
     } catch (error) {
       console.error(error);
       res.json({ status: false, message: error.message });
@@ -159,6 +151,68 @@ exports.deleteTypeProduct = async (req, res, next) => {
     try {
       const result = await ProductModel.TypeProduct.findByIdAndDelete(idType);
       res.json({ status: true, message: result });
+    } catch (error) {
+      console.error(error);
+      res.json({ status: false, message: error.message });
+    }
+  }
+};
+
+// Sản phẩm yêu thích
+exports.listIdFavorite = async (req, res, next) => {
+  if (req.method === "GET") {
+    try {
+      const idUser = req.params.idUser;
+
+      // Kiểm tra xem sản phẩm có trong danh sách ưa thích của người dùng hay không
+      const user = await UserModel.User.findById(idUser);
+
+      res.json({ status: true, message: user["favoriteProducts"] });
+    } catch (error) {
+      console.error(error);
+      res.json({ status: false, message: error.message });
+    }
+  }
+};
+
+exports.listPrFavorite = async (req, res, next) => {
+  if (req.method === "POST") {
+    try {
+      const productIds = req.body.productIds;
+
+      const favoriteProducts = await ProductModel.Product.find({
+        _id: { $in: productIds },
+      });
+
+      res.json({ status: true, message: favoriteProducts });
+    } catch (error) {
+      console.error(error);
+      res.json({ status: false, message: error.message });
+    }
+  }
+};
+
+exports.updateFavorite = async (req, res, next) => {
+  if (req.method === "PUT") {
+    try {
+      const idUser = req.params.idUser;
+      const productId = req.body.productId;
+
+      // Kiểm tra xem sản phẩm có trong danh sách ưa thích của người dùng hay không
+      const user = await UserModel.User.findById(idUser);
+
+      if (user.favoriteProducts.includes(productId)) {
+        // Nếu có, xóa sản phẩm khỏi danh sách ưa thích
+        user.favoriteProducts = user.favoriteProducts.filter(
+          (id) => id != productId
+        );
+        console.log(user);
+        res.json({ status: true, message: await user.save() });
+      } else {
+        // Nếu không, thêm sản phẩm vào danh sách ưa thích
+        user.favoriteProducts.push(productId);
+        res.json({ status: true, message: await user.save() });
+      }
     } catch (error) {
       console.error(error);
       res.json({ status: false, message: error.message });
