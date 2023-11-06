@@ -4,9 +4,10 @@ var db = require('./db');
 var bcrypt = require('bcrypt-nodejs');
 const user = new Schema(
     {
-        userName:String,
-        passWord:String,
+        email:String,
+        password:String,
         Token:String,
+        phone:Number,
         role:{type:String, enum:["Shop", "User"]},
 
     }
@@ -19,11 +20,11 @@ user.pre('save', function (next) {
         if (err) {
           return next(err);
         }
-        bcrypt.hash(user.passWord, salt, null, function (err, hash) {
+        bcrypt.hash(user.password, salt, null, function (err, hash) {
           if (err) {
             return next(err);
           }
-          user.passWord = hash;
+          user.password = hash;
           next();
         });
       });
@@ -33,7 +34,7 @@ user.pre('save', function (next) {
   });
   
   user.methods.comparePassword = function (passw, cb) {
-    bcrypt.compare(passw, this.passWord, function (err, isMatch) {
+    bcrypt.compare(passw, this.password, function (err, isMatch) {
       if (err) {
         return cb(err);
       }

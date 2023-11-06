@@ -7,9 +7,11 @@ app.use(express.json());
 var apiRouter = require('./router/blog');
 var apiLogin = require('./router/user');
 const apiInformations = require("./router/userInformation")
+const address = require("./router/address")
 app.use('/api', apiRouter);
 app.use('/user', apiLogin);
 app.use('/information', apiInformations);
+app.use('/address', address);
 app.use(function (req, res, next) {
     next(createError(404));
 });

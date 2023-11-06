@@ -2,8 +2,9 @@ var loginModel = require("../models/user");
 
 exports.Register = async (req, res, next) => {
     try {
-        const userName = req.body.userName;
-        const checkName = await loginModel.findOne({ userName: userName  })
+        const email = req.body.email;
+        console.log(req.body);
+        const checkName = await loginModel.findOne({ email: email })
         if (checkName) {
             return res.status(409).json({ error: "Tài khoản đã tồn tại" })
         }
@@ -18,12 +19,12 @@ exports.Register = async (req, res, next) => {
 
 exports.Login = async (req, res) => {
     try {
-        const userName = req.body.userName;
-        const passWord = req.body.passWord;
+        const userName = req.body.email;
+        const password = req.body.password;
         console.log(req.body)
-        const checkUser = await loginModel.findOne({ userName: userName })
+        const checkUser = await loginModel.findOne({ email: userName })
         if (checkUser) {
-            checkUser.comparePassword(passWord, function (err, result) {
+            checkUser.comparePassword(password, function (err, result) {
                 if (result && !err) {
                     console.log("Login successful")
                     res.status(200).json(checkUser)
