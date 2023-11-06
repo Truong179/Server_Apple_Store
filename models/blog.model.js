@@ -1,17 +1,18 @@
-var db = require("./db");
+const { mongoose } = require("./db");
 
 // Tạo bảng blog
-const blogSchema = new db.mongoose.Schema(
+const blogSchema = new mongoose.Schema(
   {
-    title: { type: String, require: true },
-    image: { type: String, require: true },
-    desc: { type: String, require: true },
+    title: { type: String, required: true },
+    image: { type: String, required: true },
+    desc: { type: String, required: true },
   },
   {
     collection: "Blog",
     timestamps: true,
   }
 );
-const blog = db.mongoose.model("blog", blogSchema);
 
-module.exports = { blog };
+const Blog = mongoose.model("Blog", blogSchema);
+
+module.exports = { Blog };

@@ -1,8 +1,9 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-const userInfofmtions = require("../controller/userInformation_api");
+const userInformationAPI = require("../controllers/userInformation_api");
 
-router.post("/addUserInformation", userInfofmtions.addUserInfor);
+router.get("/:idUser", userInformationAPI.getUserInforById);
+router.post("/", userInformationAPI.addUserInformation);
 
 module.exports = router;

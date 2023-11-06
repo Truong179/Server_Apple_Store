@@ -9,10 +9,10 @@ mongoose
     }
   )
   .then(() => {
-    console.log("đã kết nối tới MongoDB");
+    console.log("Đã kết nối tới MongoDB");
   })
   .catch((error) => {
-    console.error("lỗi kết nối", error);
+    console.error("Lỗi kết nối", error);
   });
 
 module.exports = { mongoose };
