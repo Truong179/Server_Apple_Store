@@ -22,6 +22,16 @@ app.use("/user", apiLogin);
 var apiInformations = require("./router/userInformation");
 app.use("/information", apiInformations);
 
+
+var apiRouter = require('./router/blog');
+var apiLogin = require('./router/user');
+const apiInformations = require("./router/userInformation")
+const address = require("./router/address")
+app.use('/api', apiRouter);
+app.use('/user', apiLogin);
+app.use('/information', apiInformations);
+app.use('/address', address);
+
 // => API Product
 var apiProduct = require("./router/product.router");
 app.use("/product", apiProduct);
@@ -30,7 +40,6 @@ app.use("/product", apiProduct);
 var apiBlog = require("./router/blog.router");
 app.use("/blog", apiBlog);
 
-// Middleware để xử lý lỗi 404
 app.use(function (req, res, next) {
   next(createError(404));
 });

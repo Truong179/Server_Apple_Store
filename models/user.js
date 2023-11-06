@@ -1,3 +1,16 @@
+
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;;
+var db = require('./db');
+var bcrypt = require('bcrypt-nodejs');
+const user = new Schema(
+    {
+        email:String,
+        password:String,
+        Token:String,
+        phone:Number,
+        role:{type:String, enum:["Shop", "User"]},
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 var db = require("./db");
@@ -10,6 +23,7 @@ const user = new Schema({
   favoriteProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }]
 });
 
+
 user.pre("save", function (next) {
   var user = this;
   if (this.isNew) {
@@ -21,6 +35,25 @@ user.pre("save", function (next) {
         if (err) {
           return next(err);
         }
+        bcrypt.hash(user.password, salt, null, function (err, hash) {
+          if (err) {
+            return next(err);
+          }
+          user.password = hash;
+          next();
+        });
+      });
+    } else {
+      return next();
+    }
+  });
+  
+  user.methods.comparePassword = function (passw, cb) {
+    bcrypt.compare(passw, this.password, function (err, isMatch) {
+      if (err) {
+        return cb(err);
+      }
+      cb(null, isMatch);
         user.passWord = hash;
         next();
       });
