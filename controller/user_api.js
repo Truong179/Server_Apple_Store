@@ -3,7 +3,7 @@ var loginModel = require("../models/user");
 exports.Register = async (req, res, next) => {
   try {
     const userName = req.body.userName;
-    const checkName = await loginModel.findOne({ userName: userName });
+    const checkName = await loginModel.user_model.findOne({ userName: userName });
     if (checkName) {
       return res.status(409).json({ error: "Tài khoản đã tồn tại" });
     }
@@ -20,7 +20,7 @@ exports.Login = async (req, res) => {
     const userName = req.body.userName;
     const passWord = req.body.passWord;
     console.log(req.body);
-    const checkUser = await loginModel.findOne({ userName: userName });
+    const checkUser = await loginModel.user_model.findOne({ userName: userName });
     if (checkUser) {
       checkUser.comparePassword(passWord, function (err, result) {
         if (result && !err) {
@@ -40,8 +40,9 @@ exports.Login = async (req, res) => {
 };
 
 exports.getUser = async function (req, res, next) {
-  await loginModel
+  await loginModel.user_model
     .find()
     .then((item) => res.json(item))
     .catch((err) => res.status(500).json(err));
 };
+

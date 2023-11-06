@@ -14,6 +14,11 @@ const prSchema = new db.mongoose.Schema(
       required: false,
       default: false,
     },
+    like: {
+      type: db.mongoose.Schema.Types.Boolean,
+      required: false,
+      default: false,
+    }
   },
   {
     collection: "Product",

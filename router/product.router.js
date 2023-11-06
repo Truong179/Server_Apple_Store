@@ -27,4 +27,7 @@ router.put(
 // Xóa loại
 router.delete("/type/:idType", prController.DeleteTypeProduct);
 
+//hiển thỉ danh sách Lưu
+router.post("/favorite/:userId/:productId",prController.FavoriteProduct)
+router.post("/unfavorite/:userId/:productId",prController.UnFavoriteProduct)
 module.exports = router;

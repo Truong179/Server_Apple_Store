@@ -7,6 +7,7 @@ const user = new Schema({
   passWord: String,
   Token: String,
   role: { type: String, enum: ["Shop", "User"] },
+  favoriteProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }]
 });
 
 user.pre("save", function (next) {
@@ -37,5 +38,5 @@ user.methods.comparePassword = function (passw, cb) {
     cb(null, isMatch);
   });
 };
-
-module.exports = db.mongoose.model("user", user);
+let user_model = db.mongoose.model("user", user);
+module.exports = {user_model};

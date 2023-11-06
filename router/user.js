@@ -7,5 +7,4 @@ router.post("/signup", loginAPI.Register);
 router.post("/signIn", loginAPI.Login);
 
 router.get("/getUser", loginAPI.getUser);
-
 module.exports = router;
