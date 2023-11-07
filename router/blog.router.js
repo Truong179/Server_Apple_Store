@@ -1,17 +1,14 @@
-var express = require("express");
-var router = express.Router();
-var multer = require("multer");
-var objUpload = multer({ dest: "./tmp" });
-// Trỏ tới controller
-var blogController = require("../controller/blog.controller");
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "./tmp" });
 
-// => Hiển thị danh sách blog //
-router.get("/", blogController.ListBlog);
-// Thêm blog
-router.post("/", objUpload.single("image"), blogController.AddBlog);
-// Sửa blog
-router.put("/:idBlog", objUpload.single("image"), blogController.UpdateBlog);
-// Xóa blog
-router.delete("/:idBlog", blogController.DeleteBlog);
+const blogController = require("../controllers/blog.controller");
+
+// Blog
+router.get("/", blogController.listBlog);
+router.post("/", upload.single("image"), blogController.addBlog);
+router.put("/:idBlog", upload.single("image"), blogController.updateBlog);
+router.delete("/:idBlog", blogController.deleteBlog);
 
 module.exports = router;

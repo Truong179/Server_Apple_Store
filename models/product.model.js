@@ -1,43 +1,34 @@
-var db = require("./db");
+const { mongoose } = require("./db");
 
 // Tạo bảng product
-const prSchema = new db.mongoose.Schema(
+const productSchema = new mongoose.Schema(
   {
-    name: { type: String, require: true },
-    image: { type: String, require: true },
-    price: { type: db.mongoose.Schema.Types.Number, required: true },
+    name: { type: String, required: true },
+    image: { type: String, required: true },
+    price: { type: Number, required: true },
     description: { type: String, required: false },
-    quantity: { type: db.mongoose.Schema.Types.Number, required: true },
-    id_type: { type: db.mongoose.Schema.Types.ObjectId, ref: "typeProduct" },
-    hidden: {
-      type: db.mongoose.Schema.Types.Boolean,
-      required: false,
-      default: false,
-    },
-    like: {
-      type: db.mongoose.Schema.Types.Boolean,
-      required: false,
-      default: false,
-    }
+    quantity: { type: Number, required: true },
+    id_type: { type: mongoose.Schema.Types.ObjectId, ref: "TypeProduct" },
+    hidden: { type: Boolean, required: false, default: false },
   },
   {
     collection: "Product",
     timestamps: true,
   }
 );
-let product = db.mongoose.model("product", prSchema);
+const Product = mongoose.model("Product", productSchema);
 
 // Tạo bảng type product
-const tpSchema = new db.mongoose.Schema(
+const typeProductSchema = new mongoose.Schema(
   {
-    name: { type: String, require: true },
-    image: { type: String, require: true },
+    name: { type: String, required: true },
+    image: { type: String, required: true },
   },
   {
     collection: "TypeProduct",
     timestamps: true,
   }
 );
-let typeProduct = db.mongoose.model("typeProduct", tpSchema);
+const TypeProduct = mongoose.model("TypeProduct", typeProductSchema);
 
-module.exports = { product, typeProduct };
+module.exports = { Product, TypeProduct };

@@ -1,12 +1,18 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;;
-var db = require('./db');
-const Address = new Schema(
-    {
-        name:String,
-        phone:Number,
-        address:String,
-        userID:String
-    }
-)
-module.exports = db.mongoose.model("Address", Address);
+const { mongoose } = require("./db");
+
+const AddressSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    phone: { type: mongoose.Schema.Types.Number, require: true },
+    address: { type: String, required: true },
+    userID: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  {
+    collection: "Address",
+    timestamps: true,
+  }
+);
+
+const Address = mongoose.model("Address", AddressSchema);
+
+module.exports = { Address };

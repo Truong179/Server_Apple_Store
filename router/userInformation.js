@@ -1,8 +1,13 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-const userInfofmtions = require("../controller/userInformation_api");
+const userInformationAPI = require("../controllers/userInformation_api");
 
-router.post("/addUserInformation", userInfofmtions.addUserInfor);
+// Infomation
+router.get("/", userInformationAPI.getUserInforById);
+router.post("/", userInformationAPI.addUserInformation);
+
+// Address
+router.get("/address/saveAddress", userInformationAPI.addAddress);
 
 module.exports = router;
