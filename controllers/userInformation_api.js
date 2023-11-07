@@ -45,7 +45,6 @@ exports.updateUserInfo = async (req, res, next) => {
           idInfo,
           updatedInfo
         );
-      console.log(result);
       res.json({ status: true, message: result });
     } catch (error) {
       console.error(error);

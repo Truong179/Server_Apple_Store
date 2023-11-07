@@ -49,7 +49,6 @@ exports.addOrder = async (req, res, next) => {
 
 exports.updateOrder = async (req, res, next) => {
   const { updateAll } = req.body;
-  console.log(req.query);
 
   try {
     if (updateAll) {
