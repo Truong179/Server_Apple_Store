@@ -1,14 +1,14 @@
+const fs = require("fs");
 const userInformationModel = require("../models/userInfofmtion");
-const Address = require("../models/address");
+const host = "192.168.0.110"; // Địa chỉ IP
 
 // Information
 exports.getUserInforById = async (req, res, next) => {
   try {
-    const idUser = req.query.idUser;
+    const userInfor = await userInformationModel.UserInformation.find(
+      req.query
+    ).populate("accountID");
 
-    const userInfor = await userInformationModel.UserInformation.find({
-      accountID: idUser,
-    });
     res.json({ status: true, message: userInfor[0] });
   } catch (error) {
     console.error(error);
@@ -20,20 +20,36 @@ exports.addUserInformation = async (req, res) => {
   try {
     const information = new userInformationModel.UserInformation(req.body);
     await information.save();
-    res.status(200).send("success");
+    res.json("success");
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Lỗi server" });
+    res.json({ error: "Lỗi server" });
   }
 };
 
-// Address
-exports.addAddress = async (req, res) => {
-  try {
-    console.log(req.body);
-    const saveAddress = new Address(req.body);
-    await saveAddress.save();
-  } catch (error) {
-    console.log(error);
+exports.updateUserInfo = async (req, res, next) => {
+  if (req.method === "PUT") {
+    const idInfo = req.params.idInfo;
+    console.log(idInfo);
+
+    try {
+      fs.renameSync(req.file.path, "./images/" + req.file.originalname);
+
+      const updatedInfo = {
+        ...req.body,
+        avatar: `http://${host}:3000/images/` + req.file.originalname,
+      };
+
+      const result =
+        await userInformationModel.UserInformation.findByIdAndUpdate(
+          idInfo,
+          updatedInfo
+        );
+      console.log(result);
+      res.json({ status: true, message: result });
+    } catch (error) {
+      console.error(error);
+      res.json({ status: false, message: error.message });
+    }
   }
 };
