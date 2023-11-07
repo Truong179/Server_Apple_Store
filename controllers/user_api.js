@@ -1,54 +1,47 @@
-const userModel = require("../models/user.model.js");
+var loginModel = require("../models/user.model");
 
-exports.register = async (req, res, next) => {
+exports.Register = async (req, res, next) => {
   try {
-    const { userName } = req.body;
-    const existingUser = await userModel.User.findOne({ userName });
-
-    if (existingUser) {
+    const userName = req.body["data"].userName;
+    const checkName = await loginModel.User.findOne({ userName: userName });
+    if (checkName) {
       return res.status(409).json({ error: "Tài khoản đã tồn tại" });
     }
-
-    const newUser = new userModel(req.body);
-    await newUser.save();
-
-    res.json(newUser);
+    const users = new loginModel.User(req.body["data"]);
+    await users.save();
+    res.json(users);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Lỗi server" });
+    console.log(error);
   }
 };
 
-exports.login = async (req, res) => {
+exports.Login = async (req, res) => {
   try {
-    const { userName, passWord } = req.body;
-    const user = await userModel.User.findOne({ userName });
+    const userName = req.body.email;
+    const password = req.body.password;
 
-    if (user) {
-      user.comparePassword(passWord, (err, result) => {
+    const checkUser = await loginModel.User.findOne({ userName: userName });
+    if (checkUser) {
+      checkUser.comparePassword(password, function (err, result) {
         if (result && !err) {
-          console.log("Đăng nhập thành công");
-          res.status(200).json(user);
+          console.log("Login successful");
+          res.json(checkUser);
         } else {
           console.log("Mật khẩu không đúng");
-          res.status(409).json({ error: "Mật khẩu không đúng" });
+          res.json({ error: "Mật khẩu không đúng" });
         }
       });
     } else {
-      res.status(409).json({ error: "Tài khoản không tồn tại" });
+      res.json({ error: "Tài khoản không tồn tại" });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Lỗi server" });
+    console.log(error);
   }
 };
 
-exports.getUsers = async (req, res, next) => {
-  try {
-    const users = await userModel.User.find();
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Lỗi server" });
-  }
+exports.getUser = async function (req, res, next) {
+  await loginModel
+    .find()
+    .then((item) => res.json(item))
+    .catch((err) => res.status(500).json(err));
 };

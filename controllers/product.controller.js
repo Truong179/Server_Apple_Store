@@ -1,6 +1,6 @@
 const fs = require("fs");
 const ProductModel = require("../models/product.model");
-const UserModel = require("../models/user.model.js");
+const UserModel = require("../models/user.model");
 const host = "192.168.0.110"; // Địa chỉ IP
 
 // Sản phẩm

@@ -107,6 +107,10 @@ async function calculateDailyRevenue() {
     // Lấy tất cả đơn hàng có trạng thái "Đã giao" được tạo trong ngày
     const orders = await OrderModel.Order.find({
       status: "Đã giao",
+      createdAt: {
+        $gte: startOfDay, // Lớn hơn hoặc bằng thời điểm bắt đầu
+        $lte: endOfDay, // Nhỏ hơn hoặc bằng thời điểm kết thúc
+      },
     });
 
     // Tính tổng giá trị của các đơn hàng
@@ -125,10 +129,18 @@ async function getOrderCounts() {
     // Lấy số lượng đơn hàng và đơn hàng đã hủy từ cơ sở dữ liệu
     const orderCount = await OrderModel.Order.countDocuments({
       status: { $in: ["Đang xử lý", "Đang vận chuyển", "Đã giao"] },
+      createdAt: {
+        $gte: startOfDay, // Lớn hơn hoặc bằng thời điểm bắt đầu
+        $lte: endOfDay, // Nhỏ hơn hoặc bằng thời điểm kết thúc
+      },
     });
 
     const cancelCount = await OrderModel.Order.countDocuments({
       status: "Đã hủy",
+      createdAt: {
+        $gte: startOfDay, // Lớn hơn hoặc bằng thời điểm bắt đầu
+        $lte: endOfDay, // Nhỏ hơn hoặc bằng thời điểm kết thúc
+      },
     });
 
     return { orderCount, cancelCount };

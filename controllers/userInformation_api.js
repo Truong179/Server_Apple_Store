@@ -1,8 +1,11 @@
 const userInformationModel = require("../models/userInfofmtion");
+const Address = require("../models/address");
 
+// Information
 exports.getUserInforById = async (req, res, next) => {
   try {
-    const idUser = req.params.idUser;
+    const idUser = req.query.idUser;
+
     const userInfor = await userInformationModel.UserInformation.find({
       accountID: idUser,
     });
@@ -21,5 +24,16 @@ exports.addUserInformation = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Lỗi server" });
+  }
+};
+
+// Address
+exports.addAddress = async (req, res) => {
+  try {
+    console.log(req.body);
+    const saveAddress = new Address(req.body);
+    await saveAddress.save();
+  } catch (error) {
+    console.log(error);
   }
 };
