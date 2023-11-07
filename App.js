@@ -21,20 +21,14 @@ app.use("/information", informationRouter);
 app.use("/product", productRouter);
 app.use("/blog", blogRouter);
 
-<<<<<<< Updated upstream
-app.use((req, res, next) => next(createError(404)));
-
-app.use((err, req, res, next) => {
-=======
-
 var apiInformations = require("./router/userInformation");
-var apiRouter = require('./router/blog');
-var apiLogin = require('./router/user');
-const address = require("./router/address")
-app.use('/api', apiRouter);
-app.use('/user', apiLogin);
-app.use('/information', apiInformations);
-app.use('/address', address);
+var apiRouter = require("./router/blog");
+var apiLogin = require("./router/user");
+const address = require("./router/address");
+app.use("/api", apiRouter);
+app.use("/user", apiLogin);
+app.use("/information", apiInformations);
+app.use("/address", address);
 
 // => API Product
 var apiProduct = require("./router/product.router");
@@ -51,7 +45,6 @@ app.use(function (req, res, next) {
 // Middleware để xử lý lỗi
 app.use(function (err, req, res, next) {
   // Đặt locals, chỉ cung cấp lỗi trong môi trường development
->>>>>>> Stashed changes
   res.locals.message = err.message;
   res.locals.error = environment === "development" ? err : {};
   res.status(err.status || 500);
