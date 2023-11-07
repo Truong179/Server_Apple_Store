@@ -5,9 +5,9 @@ const loginAPI = require("../controllers/user_api");
 const orderAPI = require("../controllers/oder.controller");
 
 // Login
-router.get("/", loginAPI.getUser);
 router.post("/signup", loginAPI.Register);
 router.post("/signIn", loginAPI.Login);
+router.put("/:idUser", loginAPI.UpdatePass);
 
 // Pay
 router.get("/pay", orderAPI.listOrder);

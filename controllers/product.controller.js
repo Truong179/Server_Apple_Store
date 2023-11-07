@@ -166,8 +166,7 @@ exports.listIdFavorite = async (req, res, next) => {
 
       // Kiểm tra xem sản phẩm có trong danh sách ưa thích của người dùng hay không
       const user = await UserModel.User.findById(idUser);
-
-      res.json({ status: true, message: user["favoriteProducts"] });
+      res.json({ status: true, message: user.favoriteProducts });
     } catch (error) {
       console.error(error);
       res.json({ status: false, message: error.message });
@@ -182,6 +181,7 @@ exports.listPrFavorite = async (req, res, next) => {
 
       const favoriteProducts = await ProductModel.Product.find({
         _id: { $in: productIds },
+        hidden: false,
       });
 
       res.json({ status: true, message: favoriteProducts });
