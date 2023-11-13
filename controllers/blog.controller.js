@@ -1,6 +1,5 @@
 const fs = require("fs");
 const BlogModel = require("../models/blog.model");
-const host = "192.168.0.110"; // Địa chỉ IP
 
 // Lấy danh sách blog
 exports.listBlog = async (req, res, next) => {
@@ -20,7 +19,7 @@ exports.addBlog = async (req, res, next) => {
 
     const newBlog = new BlogModel.Blog({
       ...req.body,
-      image: `http://${host}:3000/images/` + req.file.originalname,
+      image: `/images/${req.file.originalname}`,
     });
 
     const savedBlog = await newBlog.save();
@@ -39,7 +38,7 @@ exports.updateBlog = async (req, res, next) => {
 
     const updatedBlog = {
       ...req.body,
-      image: `http://${host}:3000/images/` + req.file.originalname,
+      image: `/images/${req.file.originalname}`,
     };
 
     const result = await BlogModel.Blog.findByIdAndUpdate(idBlog, updatedBlog);

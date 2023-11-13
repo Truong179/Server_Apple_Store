@@ -1,6 +1,5 @@
 const fs = require("fs");
 const userInformationModel = require("../models/userInfofmtion");
-const host = "192.168.0.110"; // Địa chỉ IP
 
 // Information
 exports.getUserInforById = async (req, res, next) => {
@@ -37,7 +36,7 @@ exports.updateUserInfo = async (req, res, next) => {
 
       const updatedInfo = {
         ...req.body,
-        avatar: `http://${host}:3000/images/` + req.file.originalname,
+        avatar: `/images/${req.file.originalname}`,
       };
 
       const result =
