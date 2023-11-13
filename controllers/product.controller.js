@@ -1,7 +1,6 @@
 const fs = require("fs");
 const ProductModel = require("../models/product.model");
 const UserModel = require("../models/user.model");
-const host = "192.168.0.110"; // Địa chỉ IP
 
 // Sản phẩm
 exports.listProduct = async (req, res, next) => {
@@ -44,7 +43,7 @@ exports.addProduct = async (req, res, next) => {
       fs.renameSync(req.file.path, "./images/" + req.file.originalname);
       const newProduct = new ProductModel.Product({
         ...req.body,
-        image: `http://${host}:3000/images/` + req.file.originalname,
+        image: `/images/${req.file.originalname}`,
       });
 
       const savedProduct = await newProduct.save();
@@ -65,7 +64,7 @@ exports.updateProduct = async (req, res, next) => {
 
       const updatedProduct = {
         ...req.body,
-        image: `http://${host}:3000/images/` + req.file.originalname,
+        image: `/images/${req.file.originalname}`,
       };
 
       const result = await ProductModel.Product.findByIdAndUpdate(
@@ -117,7 +116,7 @@ exports.addTypeProduct = async (req, res, next) => {
 
       const newType = new ProductModel.TypeProduct({
         ...req.body,
-        image: `http://${host}:3000/images/` + req.file.originalname,
+        image: `/images/${req.file.originalname}`,
       });
 
       const savedType = await newType.save();
