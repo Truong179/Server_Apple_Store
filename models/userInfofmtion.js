@@ -5,7 +5,7 @@ const userInformationSchema = new mongoose.Schema({
   address: { type: String, required: false },
   avatar: { type: String, required: false },
   birthday: { type: String, required: false },
-  phone: { type: mongoose.Schema.Types.Number, required: true },
+  phone: { type: mongoose.Schema.Types.Number, required: false },
   accountID: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 

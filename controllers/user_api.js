@@ -43,28 +43,44 @@ exports.Login = async (req, res) => {
 exports.UpdatePass = async (req, res, next) => {
   if (req.method === "PUT") {
     try {
-      const { oldPassword, newPassword } = req.body;
+      const { oldPassword, newPassword, role } = req.body;
       const userToUpdate = await loginModel.User.findOne({
         _id: req.params.idUser,
       });
 
-      userToUpdate.comparePassword(oldPassword, async function (err, result) {
-        if (result && !err) {
-          hashPassword(newPassword, async (err, hash) => {
-            if (err) {
-              return next(err);
-            }
-            userToUpdate.passWord = hash;
-            await userToUpdate.save();
+      if (role) {
+        userToUpdate.role = role;
+        await userToUpdate.save();
 
-            console.log("Thay đổi mật khẩu thành công");
-            res.json({ status: true, message: "Thay đổi mật khẩu thành công" });
-          });
-        } else {
-          console.log("Mật khẩu không đúng");
-          res.json({ status: false, message: "Mật khẩu không đúng" });
-        }
-      });
+        console.log("Thay đổi role thành công");
+        res.json({ status: true, message: "Thay đổi role thành công" });
+      } else if (oldPassword && newPassword) {
+        userToUpdate.comparePassword(oldPassword, async function (err, result) {
+          if (result && !err) {
+            hashPassword(newPassword, async (err, hash) => {
+              if (err) {
+                return next(err);
+              }
+              userToUpdate.passWord = hash;
+              await userToUpdate.save();
+
+              console.log("Thay đổi mật khẩu thành công");
+              res.json({
+                status: true,
+                message: "Thay đổi mật khẩu thành công",
+              });
+            });
+          } else {
+            console.log("Mật khẩu không đúng");
+            res.json({ status: false, message: "Mật khẩu không đúng" });
+          }
+        });
+      } else {
+        res.json({
+          status: false,
+          message: "Vui lòng cung cấp thông tin cần thay đổi",
+        });
+      }
     } catch (error) {
       console.error(error);
       res.json({ status: false, message: error.message });

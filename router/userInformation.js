@@ -7,6 +7,7 @@ const userInformationAPI = require("../controllers/userInformation_api");
 
 // Infomation
 router.get("/", userInformationAPI.getUserInforById);
+router.get("/all", userInformationAPI.getAllUserInfor);
 router.post("/", userInformationAPI.addUserInformation);
 router.put(
   "/:idInfo",
