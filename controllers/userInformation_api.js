@@ -6,9 +6,27 @@ exports.getUserInforById = async (req, res, next) => {
   try {
     const userInfor = await userInformationModel.UserInformation.find(
       req.query
-    ).populate("accountID");
+    ).populate("accountID", "-passWord -__v");
 
     res.json({ status: true, message: userInfor[0] });
+  } catch (error) {
+    console.error(error);
+    res.json({ status: false, message: error.message });
+  }
+};
+
+exports.getAllUserInfor = async (req, res, next) => {
+  try {
+    const userInfor = await userInformationModel.UserInformation.find({
+      "accountID.role": { $nin: ["Shop"] },
+    }).populate("accountID", "-passWord -__v");
+
+    // Lọc dòng có vai trò "Shop" nếu có
+    const filteredUserInfor = userInfor.filter(
+      (info) => info.accountID.role !== "Shop"
+    );
+
+    res.json({ status: true, message: filteredUserInfor });
   } catch (error) {
     console.error(error);
     res.json({ status: false, message: error.message });

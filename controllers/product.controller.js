@@ -56,6 +56,7 @@ exports.addProduct = async (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
+  console.log(req.body);
   if (req.method === "PUT") {
     const idPro = req.params.idPro;
 
