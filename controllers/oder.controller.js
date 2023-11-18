@@ -117,7 +117,7 @@ async function calculateDailyRevenue() {
       return totalRevenue + order.totalPrice;
     }, 0);
 
-    return `${dailyRevenue} Đ`;
+    return dailyRevenue;
   } catch (error) {
     throw error;
   }
